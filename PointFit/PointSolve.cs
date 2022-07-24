@@ -1,4 +1,6 @@
 using System.Numerics;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace PointFit;
 
@@ -35,8 +37,13 @@ public class PointSolve
     /// <param name="distance"></param>
     public List<Vector2> HasNeighborPoint(int[][] spc, int x, int y, int distance = 1)
     {
+
         // 附近的所有点
         List<Vector2> nPoint = new();
+        JsonDocument cc = null;
+        File.WriteAllText("xx",cc.RootElement.GetRawText());
+        JsonNode.Parse("asc");
+        
         // 2种方式， 一是x+y == distance, 二是 x and y <= distance
         for (int dx = -distance; dx <= distance; dx++)
         {
@@ -50,8 +57,29 @@ public class PointSolve
                 }
             }
         }
+        
+        
 
         return nPoint;
+        
+        for (int dx = 0; dx <= distance; dx++)
+        {
+            for (int dy = dx - distance; dy <= distance - x; dy++)
+            {
+                // 在其中判除了自己的所有点
+                if (dx == 0 && dy == 0) continue;
+                if (spc[x + dx][y + dy] != -1)
+                {
+                    nPoint.Add(new Vector2(x + dx, y + dy));
+                }
+                if (spc[x - dx][y + dy] != -1)
+                {
+                    nPoint.Add(new Vector2(x + dx, y + dy));
+                }
+            }
+        }
+        return nPoint;
+
     }
     
     /// <summary>
