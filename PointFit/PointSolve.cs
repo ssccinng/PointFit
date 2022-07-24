@@ -85,7 +85,7 @@ public class PointSolve
     /// <summary>
     /// 验证点云中的线段
     /// </summary>
-    public void VerifyLineInPC()
+    public void VerifyLineInPC(int[][] spc, Line line)
     {
         
     }
@@ -98,7 +98,7 @@ public class PointSolve
         
     }
     /// <summary>
-    /// 检测矩形边缘
+    /// 检测矩形边缘噪点
     /// </summary>
     public void VerifyRectBoxInPC()
     {
