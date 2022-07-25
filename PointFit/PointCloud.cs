@@ -18,4 +18,6 @@ public class PointCloud
         MinZ = points.Min(s => s.Z);
         MaxZ = points.Max(s => s.Z);
     }
+    
+    
 }

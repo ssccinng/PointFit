@@ -1,3 +1,5 @@
+using System.Drawing;
+
 namespace PointFit;
 
 public struct Line
@@ -24,5 +26,17 @@ public struct Line
             // return (End.Y - Start.Y, -End.X + Start.X, Math.Abs(-End.X + Start.X) < 0.000001 ? 0 : ((Start.Y - K * Start.X) * (End.X - Start.X)));
 
         }
+    }
+
+    public Line((double x, double y) start, double k)
+    {
+        // Start = start;
+        Start = (0, (start.y - start.x * k) + 0*k);;
+        End = (2000, (start.y - start.x * k) + 2000*k);
+    }
+
+    public Point GetPointFromX(int x)
+    {
+        return new Point(x, (int)(Start.Y - Start.X * K + K * x));
     }
 }

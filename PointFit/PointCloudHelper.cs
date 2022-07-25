@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Drawing;
 using System.Numerics;
 
@@ -101,5 +102,19 @@ public static class PointCloudHelper
         }
 
         return simplePoints;
+    }
+
+
+    public static void WriteALine(DirectBitmap bitmap, Line line)
+    {
+        using Graphics graphics = Graphics.FromImage(bitmap.Bitmap);
+        
+        graphics.DrawLine(new Pen(Color.Red), (float)line.Start.X, (float)line.Start.Y, (float)line.End.X, (float)line.End.Y);
+    }
+
+    public static void WritePoint(DirectBitmap bitmap, Point point)
+    {
+        using Graphics graphics = Graphics.FromImage(bitmap.Bitmap);
+        graphics.FillEllipse(Brushes.Red, point.X - 5, point.Y - 5, 10, 10);
     }
 }
