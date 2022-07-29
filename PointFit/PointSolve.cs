@@ -144,6 +144,7 @@ public class PointSolve
         int offsetX = 1;
         while (true)
         {
+            // 如果自己是空的
             if (
                 HasNeighborPoint(point.X + offsetX, line.GetPointFromX(point.X + offsetX).Y, 3, 2).Count <= 1 &&
                 HasNeighborPoint(point.X + offsetX + 1, line.GetPointFromX(point.X + offsetX + 1).Y, 3, 2).Count <= 1

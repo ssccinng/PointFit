@@ -18,10 +18,23 @@ public class PointCloud
     
     public readonly float MinX, MinY, MaxX, MaxY, MinZ, MaxZ;
 
-    public readonly int Width, Height;
+    public readonly int Width, Height, Depth;
 
-    public PointCloud(List<Vector3> points)
+    public PointCloud(List<Vector3> points1, bool mogai = false)
     {
+        IEnumerable<Vector3> points;
+        if (mogai)
+        {
+            var avg = points1.Average(s => s.Z);
+            points = points1.Where(s => Math.Abs(s.Z - avg) < 20);
+        }
+        else
+        {
+            points = points1;
+        }
+
+        // Console.WriteLine(points.li);
+        
         MinX = points.Min(s => s.X);
         MinY = points.Min(s => s.Y);
         MaxX = points.Max(s => s.X);
@@ -31,6 +44,7 @@ public class PointCloud
         Points = points.Select(s => new Vector3(s.X - MinX + 10, s.Y - MinY + 10, s.Z - MinZ)).ToList();
         Width = (int)(MaxX - MinX + 21);
         Height = (int)(MaxY - MinY + 21);
+        Depth = (int)(MaxZ - MinZ + 1);
 
         Graph = GetSimplePointCloud();
         // Width = (int)(MaxX - MinX + 21);
@@ -38,7 +52,7 @@ public class PointCloud
         // points.Select(s => s.)
     }
 
-    public static PointCloud GetPointCloudFromFile(string filePath)
+    public static PointCloud GetPointCloudFromFile(string filePath, bool mogai = false)
     {
         List<Vector3> points = new();
         var file = File.ReadAllLines(filePath);
@@ -58,7 +72,7 @@ public class PointCloud
             }
         }
 
-        return new PointCloud(points);
+        return new PointCloud(points, mogai);
     }
     public int[][] GetSimplePointCloud()
     {
@@ -83,7 +97,44 @@ public class PointCloud
 
         return simplePoints;
     }
+    /// <summary>
+    /// 获取二色图
+    /// </summary>
+    /// <returns></returns>
+    public DirectBitmap GetTwoBitmapFromPoints()
+    {
 
+
+        DirectBitmap bitmap = new
+            (Width, Height);
+        for (int i = 0; i < Points.Count; i++)
+        {
+            // Console.WriteLine((int)((points[i].X - minX) * 10));
+            // Console.WriteLine((int)((points[i].Y - minY) * 10));
+            bitmap.SetPixel((int)((Points[i].X) * 1),
+                (int)((Points[i].Y) * 1),
+                Color.FromArgb(255, 255, 255));
+        }
+
+        return bitmap;
+    }
+    public DirectBitmap GetBWBitmapFromPoints()
+    {
+
+
+        DirectBitmap bitmap = new
+            (Width, Height);
+        for (int i = 0; i < Points.Count; i++)
+        {
+            // Console.WriteLine((int)((points[i].X - minX) * 10));
+            // Console.WriteLine((int)((points[i].Y - minY) * 10));
+            bitmap.SetPixel((int)((Points[i].X) * 1),
+                (int)((Points[i].Y) * 1),
+                Color.FromArgb((int)Points[i].Z % 256, (int)Points[i].Z % 256, (int)Points[i].Z % 256));
+        }
+
+        return bitmap;
+    }
     public DirectBitmap GetBitmapFromPoints()
     {
 
@@ -96,10 +147,44 @@ public class PointCloud
             // Console.WriteLine((int)((points[i].Y - minY) * 10));
             bitmap.SetPixel((int)((Points[i].X) * 1),
                 (int)((Points[i].Y) * 1),
-                Color.White);
+                Color.FromArgb((int)Points[i].Z % 256, (int)Points[i].Z % 256, (int)Points[i].Z % 256));
+        }
+
+        return bitmap;
+    }
+    public DirectBitmap GetRGBBitmapFromPoints()
+    {
+
+
+        DirectBitmap bitmap = new
+            (Width, Height);
+        for (int i = 0; i < Points.Count; i++)
+        {
+            // Console.WriteLine((int)((points[i].X - minX) * 10));
+            // Console.WriteLine((int)((points[i].Y - minY) * 10));
+            bitmap.SetPixel((int)((Points[i].X) * 1),
+                (int)((Points[i].Y) * 1),
+                Color.FromArgb(255 - (int)(Points[i].Z / Depth * 255), (int)(Points[i].Z / Depth * 255), 0));
         }
 
         return bitmap;
     }
     
+    public DirectBitmap GetRGB1BitmapFromPoints()
+    {
+
+
+        DirectBitmap bitmap = new
+            (Width, Height);
+        for (int i = 0; i < Points.Count; i++)
+        {
+            // Console.WriteLine((int)((points[i].X - minX) * 10));
+            // Console.WriteLine((int)((points[i].Y - minY) * 10));
+            bitmap.SetPixel((int)((Points[i].X) * 1),
+                (int)((Points[i].Y) * 1),
+                Color.FromArgb(255 - (int)((Points[i].Z % 16) / 16 * 255), (int)((Points[i].Z % 16) / 16 * 255), (int)((Points[i].Z / 16) / (Depth / 16 + 1) * 255)));
+        }
+
+        return bitmap;
+    }
 }

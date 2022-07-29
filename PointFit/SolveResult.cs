@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace PointCloudSeg;
+namespace PointFit;
 
 public class SolveResult
 {
