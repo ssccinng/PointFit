@@ -53,12 +53,13 @@ public class DirectBitmap : IDisposable
         BitsHandle.Free();
     }
     
-    public void WriteALine(Line line)
+    public void WriteALine(Line line, Brush color = null)
     {
+        color ??= Brushes.Red;
         using Graphics graphics = Graphics.FromImage(Bitmap);
         var p1 = line.GetPointFromX(0);
         var p2 = line.GetPointFromX(2000);
-        graphics.DrawLine(new Pen(Color.Red), (float)p1.X, (float)p1.Y, (float)p2.X, (float)p2.Y);
+        graphics.DrawLine(new Pen(color), (float)p1.X, (float)p1.Y, (float)p2.X, (float)p2.Y);
     }
     public void WriteASegment(Segment line, Brush color = null)
     {

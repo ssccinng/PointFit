@@ -79,9 +79,10 @@ public class PCSolver
         while (cnt > 0)
         {
             var rPoint = PointCloud.Points[_rnd.Next(PointCloud.Points.Count)];
-            if (rPoint.X < 110 || rPoint.Y < 110) continue;
-            if (rPoint.X + 110 > PointCloud.Width || rPoint.Y + 110 > PointCloud.Height) continue;
-            if (HasNeighborPoint((int)(rPoint.X), (int)(rPoint.Y), 100, 2).Count >= 9999 * 2)
+            // if (rPoint.X < 110 || rPoint.Y < 110) continue;
+            // if (rPoint.X + 110 > PointCloud.Width || rPoint.Y + 110 > PointCloud.Height) continue;
+            // Console.WriteLine(HasNeighborPoint((int)(rPoint.X), (int)(rPoint.Y), 100, 4).Count);
+            if (HasNeighborPoint((int)(rPoint.X), (int)(rPoint.Y), 3, 2).Count >= 9)
             {
                 res.Add(new Point((int)(rPoint.X ), (int)(rPoint.Y)));
                 cnt--;
@@ -95,10 +96,33 @@ public class PCSolver
     /// </summary>
     /// <param name="point"></param>
     /// <returns></returns>
-    public List<Line> GetFSXFormPoint(Point point)
+    public static List<Line> GetFSXFormPoint(Point point)
     {
         List<Line> res = new();
         for (int i = -82; i <= 180 - 82; i += 10)
+        {
+            
+            var rr =new Line(new Vector2(point.X, point.Y), Math.Tan(i / 180.0 * Math.PI));
+            res.Add(rr);
+        }
+        // for (int i = -82; i < 180 - 82; i += 60)
+        // {
+        //     Console.WriteLine(i);
+        //     var rr =new Line(new Vector2(point.X, point.Y), Math.Tan(i / 180.0 * Math.PI));
+        //     res.Add(rr);
+        // }
+        return res;
+    }
+    public static List<Line> GetFSXFormPoint(Vector2 point, int a1 = -60, int a2 = 90)
+    {
+        List<Line> res = new();
+        // for (int i = -82; i <= 180 - 82; i += 120)
+        // {
+        //     
+        //     var rr =new Line(new Vector2(point.X, point.Y), Math.Tan(i / 180.0 * Math.PI));
+        //     res.Add(rr);
+        // }
+        for (int i = a1; i < 180 + a1; i += a2)
         {
             
             var rr =new Line(new Vector2(point.X, point.Y), Math.Tan(i / 180.0 * Math.PI));

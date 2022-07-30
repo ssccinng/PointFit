@@ -8,8 +8,8 @@ namespace PointCloudSeg;
 /// </summary>
 public class Line
 {
-    public readonly Vector2 Start;
-    public readonly Vector2 End;
+    public Vector2 Start;
+    public Vector2 End;
     // 斜率
     public readonly double K;
 
@@ -40,6 +40,8 @@ public class Line
         Start = point;
         K = k;
         c = point.Y - point.X * k;
+        // -kx + y = c
+        (A, B, C) = (-K, 1, -c);
     }
 
     public (double A, double B, double C) Coefficient => (A, B, C);
